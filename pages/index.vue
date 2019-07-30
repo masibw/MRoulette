@@ -1,13 +1,16 @@
 <template>
   <div id="app">
     <h1 class="title">Roulette</h1>
-    <input type="text" v-model="newLabel" />
-    <input type="text" v-model="newRate" />
     <form v-on:submit.prevent>
-      <button v-on:click="addItem">add</button>
+      <ul v-for="(item) in items" :key="item.id" class="no-gutters">
+        <li>
+          <input v-model="item.label" />
+          <input v-model="item.rate" />
+        </li>
+      </ul>
+      <button @click="fillData()">fillData()</button>
+      <button @click="onAddItems()">onAddItems()</button>
     </form>
-    <li v-for="label in dataLabels">{{ label}}</li>
-    <li v-for="rate in rates">{{rate}}</li>
     <h2 class="subtitle">アプリ名</h2>
     <pie-chart :chart-data="datacollection"></pie-chart>
   </div>
@@ -24,34 +27,64 @@ export default {
   },
   data() {
     return {
-      newLabel: "",
-      newRate: "",
-      dataLabels: [],
-      rates: [],
-      datacollection: null
+      datacollection: null,
+      items: [
+        {
+          colorNo: 0,
+          label: "",
+          rate: 0
+        }
+      ],
+      datas: [1, 2],
+      graphColors: [1, 2],
+      labels: [1, 2],
+      baseColors: [
+        "#ff7675",
+        "#fd79a8",
+        "#fdcb6e",
+        "#ffeaa7",
+        "#00b894",
+        "#55efc4",
+        "#0984e3",
+        "#74b9ff",
+        "#a29bfe",
+        "#b2bec3"
+      ]
     };
   },
   methods: {
-    addItem: function(event) {
-      var item = {
-        label: this.newLabel,
-        rate: this.newRate
-      };
-      this.dataLabels.push(item.label);
-      this.rates.push(item.rate);
-      this.fillData();
-    },
     fillData() {
+      this.setChartParam();
       this.datacollection = {
-        labels: this.dataLabels,
+        labels: this.labels,
         datasets: [
           {
-            label: this.dataLabels,
-            backgroundColor: "#333",
-            data: this.rates
+            data: this.datas,
+            label: this.labels,
+            backgroundColor: this.graphColors
           }
         ]
       };
+    },
+    onAddItems() {
+      this.items.push({
+        colorNo: this.items.length,
+        label: "",
+        rate: 0
+      });
+    },
+    setChartParam() {
+      this.datas = [];
+      this.graphColors = [];
+      this.labels = [];
+
+      for (let i = 0; i < this.items.length; i++) {
+        this.datas.push(this.items[i].rate);
+        var addColor = this.baseColors[this.items[i].colorNo];
+        this.graphColors.push(addColor);
+        var addLabel = this.items[i].label;
+        this.labels.push(addLabel);
+      }
     }
   }
 };
