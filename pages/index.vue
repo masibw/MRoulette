@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <h1 class="title">Roulette</h1>
+    <pie-chart :chart-data="datacollection" :options="chartOptions"></pie-chart>
     <form v-on:submit.prevent>
       <ul v-for="(item) in items" :key="item.id" class="no-gutters">
         <li>
@@ -12,12 +13,11 @@
       <button @click="onAddItems()">onAddItems()</button>
     </form>
     <h2 class="subtitle">アプリ名</h2>
-    <pie-chart :chart-data="datacollection"></pie-chart>
   </div>
 </template>
 <script>
 import PieChart from "./PieChart.js";
-
+import "chartjs-plugin-labels";
 export default {
   components: {
     PieChart
@@ -31,13 +31,25 @@ export default {
       items: [
         {
           colorNo: 0,
-          label: "",
-          rate: 0
+          label: "edit me",
+          rate: 1
         }
       ],
-      datas: [1, 2],
-      graphColors: [1, 2],
-      labels: [1, 2],
+      chartOptions: {
+        plugins: {
+          labels: [
+            {
+              render: "label",
+              fontSize: 32,
+              fontStyle: "bold",
+              fontColor: "#333"
+            }
+          ]
+        }
+      },
+      datas: [],
+      graphColors: [],
+      labels: [],
       baseColors: [
         "#ff7675",
         "#fd79a8",
@@ -70,7 +82,7 @@ export default {
       this.items.push({
         colorNo: this.items.length,
         label: "",
-        rate: 0
+        rate: 1
       });
     },
     setChartParam() {
