@@ -1,23 +1,29 @@
 <template>
   <div id="app">
     <h1 class="title">Roulette</h1>
-    <pie-chart :chart-data="datacollection" :options="chartOptions"></pie-chart>
-    <form v-on:submit.prevent>
-      <ul v-for="(item) in items" :key="item.id" class="no-gutters">
-        <li>
-          <input v-model="item.label" />
-          <input v-model="item.rate" />
-        </li>
-      </ul>
-      <button @click="fillData()">fillData()</button>
-      <button @click="onAddItems()">onAddItems()</button>
-    </form>
-    <h2 class="subtitle">アプリ名</h2>
+    <div id="roulette">
+      <pie-chart :chart-data="datacollection" :options="chartOptions"></pie-chart>
+    </div>
+    <div id="sideMenu">
+      <p>label 比率</p>
+      <form v-on:submit.prevent>
+        <ul v-for="(item) in items" :key="item.id" class="no-gutters">
+          <li>
+            <input v-model="item.label" />
+            <input v-model="item.rate" />
+          </li>
+        </ul>
+        <button @click="fillData()">fillData()</button>
+        <button @click="onAddItems()">onAddItems()</button>
+        <button>Start!</button>
+      </form>
+    </div>
   </div>
 </template>
 <script>
 import PieChart from "./PieChart.js";
 import "chartjs-plugin-labels";
+
 export default {
   components: {
     PieChart
@@ -102,5 +108,39 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
+#app {
+  max-width: 90%;
+  margin: auto;
+  border: 1px solid #333;
+}
+
+ul {
+  list-style: none;
+}
+
+#roulette {
+  width: 100%;
+  margin: auto;
+}
+#sideMenu {
+  width: 100%;
+  margin: auto;
+}
+
+@media (min-width: 768px) {
+  #roulette {
+    width: 45%;
+    margin: auto;
+  }
+  #roulette,
+  #sideMenu {
+    vertical-align: top;
+    display: inline-block;
+  }
+  #sideMenu {
+    width: 45%;
+    padding: 5%;
+  }
+}
 </style>
