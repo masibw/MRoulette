@@ -2,7 +2,7 @@
   <div id="app">
     <h1 class="title">Roulette</h1>
     <div id="roulette">
-      <pie-chart :chart-data="datacollection" :options="chartOptions"></pie-chart>
+      <pie-chart id="pieChart" :chart-data="datacollection" :options="chartOptions"></pie-chart>
     </div>
     <div id="sideMenu">
       <p>label 比率</p>
@@ -15,7 +15,8 @@
         </ul>
         <button @click="fillData()">fillData()</button>
         <button @click="onAddItems()">onAddItems()</button>
-        <button>Start!</button>
+        <button @click="onDeleteItems()">onDeleteItems()</button>
+        <button @click="onStartRoulette()">Start!</button>
       </form>
     </div>
   </div>
@@ -34,6 +35,7 @@ export default {
   data() {
     return {
       datacollection: null,
+      isActive: false,
       items: [
         {
           colorNo: 0,
@@ -78,7 +80,6 @@ export default {
         datasets: [
           {
             data: this.datas,
-            label: this.labels,
             backgroundColor: this.graphColors
           }
         ]
@@ -103,12 +104,55 @@ export default {
         var addLabel = this.items[i].label;
         this.labels.push(addLabel);
       }
+    },
+    onDeleteItems() {
+      if (this.items.length > 1) {
+        this.items.splice(this.items.length - 1, 1);
+      }
+    },
+    onStartRoulette() {
+      let speed = 10;
+      const num = this.items.length;
+      const timeOut = 4000;
+      const section = 360 / num;
+      const pieAngle = 360;
+      var stopAngle = Math.floor(Math.random() * pieAngle);
+      const me = this;
+      let angle = stopAngle;
+      let stopNumber;
+      let i;
+      for (i = 1; i <= num; i++) {
+        if (section * (i - 1) + 1 <= stopAngle && stopAngle <= section * i) {
+          stopNumber = i;
+
+          break;
+        }
+      }
+
+      let rotate = setInterval(function() {
+        pieChart.style.transform = "rotate(" + angle + "deg)";
+        angle += speed;
+      }, 5);
+
+      var timeoutFunction = setTimeout(function() {
+        clearInterval(rotate);
+        //TODO針
+
+        pieChart.style.transform = "rotate(" + stopAngle + "deg)";
+        alert(me.items[stopNumber - 1].label);
+      }, timeOut);
     }
   }
 };
 </script>
 
 <style lang="scss">
+:root {
+  --angle: 30;
+  --speed: 10;
+  --stopAngle: 50;
+  --bg: blue;
+}
 #app {
   max-width: 90%;
   margin: auto;
