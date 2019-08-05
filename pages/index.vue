@@ -19,6 +19,12 @@
         <button @click="onStartRoulette()">Start!</button>
       </form>
     </div>
+    <div id="overlay" v-show="showContent" v-on:click="closeModal">
+      <div id="content">
+        <p>選べれたのは「{{picked}}」</p>
+        <button v-on:click="closeModal">close</button>
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -36,6 +42,8 @@ export default {
     return {
       datacollection: null,
       isActive: false,
+      showContent: false,
+      picked: "",
       items: [
         {
           colorNo: 0,
@@ -124,7 +132,7 @@ export default {
       for (i = 1; i <= num; i++) {
         if (section * (i - 1) + 1 <= stopAngle && stopAngle <= section * i) {
           stopNumber = i;
-
+          this.picked = me.items[stopNumber - 1].label;
           break;
         }
       }
@@ -138,9 +146,15 @@ export default {
         clearInterval(rotate);
         //TODO針
 
-        pieChart.style.transform = "rotate(" + stopAngle + "deg)";
-        alert(me.items[stopNumber - 1].label);
+        pieChart.style.transform = "rotate(-" + stopAngle + "deg)";
+        me.openModal();
       }, timeOut);
+    },
+    openModal() {
+      this.showContent = true;
+    },
+    closeModal() {
+      this.showContent = false;
     }
   }
 };
@@ -172,6 +186,26 @@ ul {
   margin: auto;
 }
 
+#overlay {
+  z-index: 1;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#content {
+  z-index: 2;
+  width: 50%;
+  padding: 1em;
+  background: #fff;
+}
 @media (min-width: 768px) {
   #roulette {
     width: 45%;
