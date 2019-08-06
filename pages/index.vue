@@ -9,8 +9,8 @@
       <form v-on:submit.prevent>
         <ul v-for="(item) in items" :key="item.id" class="no-gutters">
           <li>
-            <input v-model="item.label" />
-            <input v-model="item.rate" />
+            <input class="textbox" v-model="item.label" placeholder="名称を入力してください" />
+            <input class="textbox" v-model="item.rate" placeholder="比率を入力してください" />
           </li>
         </ul>
         <button @click="fillData()">fillData()</button>
@@ -19,12 +19,14 @@
         <button @click="onStartRoulette()">Start!</button>
       </form>
     </div>
-    <div id="overlay" v-show="showContent" v-on:click="closeModal">
-      <div id="content">
-        <p>選べれたのは「{{picked}}」</p>
-        <button v-on:click="closeModal">close</button>
+    <transition name="modal">
+      <div id="overlay" v-show="showContent" v-on:click="closeModal">
+        <div id="content" @click.stop>
+          <p>選ばれたのは「{{picked}}」でした!!!</p>
+          <button v-on:click="closeModal">close</button>
+        </div>
       </div>
-    </div>
+    </transition>
   </div>
 </template>
 <script>
@@ -48,7 +50,9 @@ export default {
         {
           colorNo: 0,
           label: "edit me",
-          rate: 1
+          rate: 1,
+          rangeBottom: 0,
+          rangeTop: 0
         }
       ],
       chartOptions: {
@@ -56,7 +60,7 @@ export default {
           labels: [
             {
               render: "label",
-              fontSize: 32,
+              fontSize: 16,
               fontStyle: "bold",
               fontColor: "#333"
             }
@@ -120,19 +124,38 @@ export default {
     },
     onStartRoulette() {
       let speed = 10;
-      const num = this.items.length;
+      let num = this.items.length;
       const timeOut = 4000;
-      const section = 360 / num;
+      let sumRate = 0;
+      let i = 0;
+      this.picked = "";
+      for (i = 0; i < this.items.length; i++) {
+        sumRate += parseInt(this.items[i].rate);
+      }
+      const section = 360 / sumRate;
+      for (i = 0; i < this.items.length; i++) {
+        if (i == 0) {
+          this.items[i].rangeBottom = 1;
+          this.items[i].rangeTop = this.items[i].rate * section;
+        } else {
+          this.items[i].rangeBottom = this.items[i - 1].rangeTop + 1;
+          this.items[i].rangeTop =
+            this.items[i - 1].rangeTop + this.items[i].rate * section;
+        }
+      }
       const pieAngle = 360;
       var stopAngle = Math.floor(Math.random() * pieAngle);
       const me = this;
       let angle = stopAngle;
-      let stopNumber;
-      let i;
-      for (i = 1; i <= num; i++) {
-        if (section * (i - 1) + 1 <= stopAngle && stopAngle <= section * i) {
+      let stopNumber = 0;
+      for (i = 0; i < num; i++) {
+        if (
+          stopAngle >= this.items[i].rangeBottom &&
+          this.items[i].rangeTop >= stopAngle
+        ) {
           stopNumber = i;
-          this.picked = me.items[stopNumber - 1].label;
+          this.picked = this.items[stopNumber].label;
+
           break;
         }
       }
@@ -147,7 +170,8 @@ export default {
         //TODO針
 
         pieChart.style.transform = "rotate(-" + stopAngle + "deg)";
-        me.openModal();
+        setTimeout(me.openModal, 500);
+        me.num = 0;
       }, timeOut);
     },
     openModal() {
@@ -161,16 +185,9 @@ export default {
 </script>
 
 <style lang="scss">
-:root {
-  --angle: 30;
-  --speed: 10;
-  --stopAngle: 50;
-  --bg: blue;
-}
 #app {
   max-width: 90%;
   margin: auto;
-  border: 1px solid #333;
 }
 
 ul {
@@ -199,12 +216,35 @@ ul {
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: all 0.8s ease;
 }
 #content {
   z-index: 2;
   width: 50%;
   padding: 1em;
   background: #fff;
+  transition: all 0.8s ease;
+}
+
+.modal-enter,
+.modal-leave-active {
+  opacity: 0;
+}
+ul {
+  padding: 0;
+}
+li {
+  margin: 10px;
+  .textbox {
+    border-radius: 5%;
+    width: 49%;
+    height: 30px;
+  }
+  .textbox:focus {
+    border: 1px solid #da3c41;
+    outline: none;
+    box-shadow: 0 0 5px 1px rgba(218, 60, 65, 0.5);
+  }
 }
 @media (min-width: 768px) {
   #roulette {
