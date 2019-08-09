@@ -1,15 +1,14 @@
 <template>
   <div id="container">
-    <div id="navbar">
-      <h1 class="title">Roulette</h1>
-    </div>
     <div id="app">
       <div id="roulette">
+        <img class="pin" src="~/assets/pin-min.png" v-show="!pinRotate" />
+        <img class="pin" src="~assets/pin-anime.gif" v-show="pinRotate" />
         <pie-chart id="pieChart" :chart-data="datacollection" :options="chartOptions"></pie-chart>
       </div>
       <div id="sideMenu">
         <p id="label">label</p>
-        <p id="rate">比率</p>
+        <p id="rate">rate(半角数字)</p>
         <form v-on:submit.prevent>
           <ul v-for="(item) in items" :key="item.id" class="no-gutters">
             <li>
@@ -25,25 +24,47 @@
                 pattern="\d+"
                 class="textbox number"
                 v-model="item.rate"
-                placeholder="比率を入力してください(半角数字)"
+                placeholder="比率"
                 required
               />
             </li>
           </ul>
-          <button class="btn-flat" @click="fillData()" v-show="!isSet">fillData()</button>
-          <button class="btn-flat" @click="onAddItems()">onAddItems()</button>
-          <button class="btn-flat" @click="onDeleteItems()">onDeleteItems()</button>
-          <button class="btn-flat btn-green" @click="onStartRoulette()" v-show="isSet">Start!</button>
+          <button class="btn-flat btn-blue" style="width:49%;" @click="onAddItems()">onAddItems()</button>
+          <button
+            class="btn-flat btn-red"
+            style="width:49%;"
+            @click="onDeleteItems()"
+          >onDeleteItems()</button>
+          <button
+            class="btn-flat btn-green"
+            style="display:block; width:99%; margin-top:3px;"
+            @click="fillData()"
+            v-show="!isSet"
+          >fillData()</button>
+          <button
+            class="btn-flat btn-green"
+            style="display:block; width:99%; margin-top:3px;"
+            @click="onStartRoulette()"
+            v-show="isSet"
+          >Start!</button>
         </form>
       </div>
       <transition name="modal">
         <div id="overlay" v-show="showContent" v-on:click="closeModal">
           <div id="content" @click.stop>
-            <p>選ばれたのは「{{picked}}」でした!!!</p>
-            <button v-on:click="closeModal">close</button>
+            <div id="resultText">
+              <p>選ばれたのは</p>
+              <p id="result">「{{picked}}」</p>
+              <p>でした!!!</p>
+            </div>
+            <button id="btn-close" class="btn-flat btn-blue" v-on:click="closeModal">Close</button>
           </div>
         </div>
       </transition>
+    </div>
+    <div id="footer">
+      <nuxt-link to="terms" class="link" style="font-size:1.5em; color:#333;">利用規約</nuxt-link>
+      <p>copyright 2019 mesimasi</p>
     </div>
   </div>
 </template>
@@ -55,9 +76,11 @@ export default {
   components: {
     PieChart
   },
+  layout: "navbar",
   mounted() {
     this.fillData();
     this.isSet = false;
+    this.pinRotate = false;
   },
   data() {
     return {
@@ -66,6 +89,7 @@ export default {
       showContent: false,
       picked: "",
       isSet: false,
+      pinRotate: false,
       items: [
         {
           colorNo: 0,
@@ -76,6 +100,9 @@ export default {
         }
       ],
       chartOptions: {
+        legend: {
+          display: false
+        },
         plugins: {
           labels: [
             {
@@ -92,20 +119,21 @@ export default {
       labels: [],
       baseColors: [
         "#ff7675",
-        "#fd79a8",
-        "#fdcb6e",
-        "#ffeaa7",
-        "#00b894",
-        "#55efc4",
+        "#1e90ff",
+        "#00ff7f",
+        "#ffd700",
+        "#ff1e1e",
+        "#89ff14",
         "#0984e3",
-        "#74b9ff",
-        "#a29bfe",
-        "#b2bec3"
+        "#b8d200",
+        "#ff00ff",
+        "#ffff0a"
       ]
     };
   },
   methods: {
     fillData() {
+      pieChart.style.transform = "rotate(" + 0 + "deg)";
       this.setChartParam();
       this.datacollection = {
         labels: this.labels,
@@ -120,10 +148,11 @@ export default {
     },
     onAddItems() {
       this.items.push({
-        colorNo: this.items.length,
+        colorNo: Math.round(Math.random() * 9),
         label: "",
         rate: 1
       });
+      this.isSet = false;
     },
     setChartParam() {
       this.datas = [];
@@ -142,14 +171,17 @@ export default {
       if (this.items.length > 1) {
         this.items.splice(this.items.length - 1, 1);
       }
+      this.isSet = false;
     },
     onStartRoulette() {
+      this.pinRotate = true;
       let speed = 10;
       let num = this.items.length;
       const timeOut = 4000;
       let sumRate = 0;
       let i = 0;
       this.picked = "";
+      pieChart.style.transform = "rotate(" + 0 + "deg)";
       for (i = 0; i < this.items.length; i++) {
         sumRate += parseInt(this.items[i].rate);
       }
@@ -189,7 +221,7 @@ export default {
       var timeoutFunction = setTimeout(function() {
         clearInterval(rotate);
         //TODO針
-
+        me.pinRotate = false;
         pieChart.style.transform = "rotate(-" + stopAngle + "deg)";
         setTimeout(me.openModal, 500);
         me.num = 0;
@@ -207,25 +239,20 @@ export default {
 </script>
 
 <style lang="scss">
-#navbar {
-  background-color: #333;
-  height: 10vh;
-  width: 100vw;
-  color: #fff;
+@import url("https://fonts.googleapis.com/css?family=Noto+Sans+JP|Roboto&display=swap");
+p {
+  font-size: 15px;
 }
-.btn-flat {
-  display: block;
-  width: 160px;
-  padding: 0.8em;
-  text-align: center;
+
+#container {
+  font-family: "Roboto", sans-serif;
+  font-family: "Noto Sans JP", sans-serif;
+}
+
+.link {
   text-decoration: none;
-  color: #333;
-  border-radius: 3px;
-  transition: 0.4s;
 }
-.btn-flat:hover {
-  color: #fff;
-}
+
 #app {
   max-width: 90%;
   margin: auto;
@@ -236,8 +263,16 @@ ul {
 }
 
 #roulette {
+  position: relative;
   width: 100%;
   margin: auto;
+  .pin {
+    z-index: 1;
+    position: absolute;
+    width: 5%;
+    left: 50%;
+    transform: translateX(-50%);
+  }
 }
 #sideMenu {
   width: 100%;
@@ -245,6 +280,7 @@ ul {
   p {
     display: inline-block;
     text-align: center;
+    font-size: 15px;
   }
   #label {
     width: 74%;
@@ -253,7 +289,9 @@ ul {
     width: 20%;
   }
 }
-
+#pieChart {
+  margin-top: 1rem;
+}
 #overlay {
   z-index: 1;
 
@@ -265,16 +303,33 @@ ul {
   background-color: rgba(0, 0, 0, 0.5);
 
   display: flex;
+  display: -webkit-box;
+  display: -ms-flex;
+  -ms-align-items: center;
+  -webkit-align-items: center;
   align-items: center;
+  -ms-justify-content: center;
+  -webkit-justify-content: center;
   justify-content: center;
   transition: all 0.8s ease;
-}
-#content {
-  z-index: 2;
-  width: 50%;
-  padding: 1em;
-  background: #fff;
-  transition: all 0.8s ease;
+  #content {
+    z-index: 2;
+    width: 80%;
+    height: 30%;
+    padding: 1em;
+    background: #fff;
+    transition: all 0.8s ease;
+    position: relative;
+    p {
+      text-align: center;
+    }
+    #result {
+      font-size: 2em;
+    }
+    #resultText {
+      margin: 1em;
+    }
+  }
 }
 
 .modal-enter,
@@ -287,9 +342,11 @@ ul {
 li {
   margin: 10px;
   .textbox {
-    border-radius: 5%;
-
-    height: 50px;
+    border: none;
+    border-bottom: 2px solid #333;
+    height: 40px;
+    font-size: 22px;
+    text-align: center;
   }
   .label {
     width: 75%;
@@ -299,11 +356,69 @@ li {
     width: 20%;
   }
   .textbox:focus {
-    border: 1px solid #4c3cda;
+    border-bottom: 2px solid #3eb370;
     outline: none;
-    box-shadow: 0 0 5px 1px rgba(44, 101, 192, 0.5);
+    transition: 0.5s;
   }
 }
+#footer {
+  color: #333;
+  text-align: center;
+  p {
+    text-align: right;
+    margin: 5px;
+  }
+}
+//ボタン
+.btn-flat {
+  display: inline-block;
+  width: 160px;
+  padding: 0.8em;
+  text-align: center;
+  text-decoration: none;
+  color: #333;
+  border-radius: 3px;
+  transition: 0.4s;
+  font-size: 18px;
+}
+.btn-flat:hover {
+  color: #fff;
+}
+.btn-red {
+  color: #d9333f;
+  border: solid 2px #d9333f;
+}
+.btn-red:hover {
+  background-color: #d9333f;
+  transition: 0.5s;
+}
+.btn-blue {
+  color: #0095d9;
+  border: solid 2px #0095d9;
+}
+.btn-blue:hover {
+  background-color: #0095d9;
+  transition: 0.5s;
+}
+.btn-green {
+  color: #3eb370;
+  border: solid 2px #3eb370;
+}
+.btn-green:hover {
+  background-color: #3eb370;
+  transition: 0.5s;
+}
+
+#btn-close {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  -webkit-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  margin-bottom: 1em;
+}
+
 @media (min-width: 768px) {
   #roulette {
     width: 45%;
@@ -317,6 +432,15 @@ li {
   #sideMenu {
     width: 45%;
     padding: 5%;
+  }
+  #overlay {
+    #content {
+      width: 50%;
+      height: 30%;
+      #result {
+        font-size: 3em;
+      }
+    }
   }
 }
 </style>
