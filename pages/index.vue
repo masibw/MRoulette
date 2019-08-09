@@ -29,24 +29,20 @@
               />
             </li>
           </ul>
-          <button class="btn-flat btn-blue" style="width:49%;" @click="onAddItems()">onAddItems()</button>
-          <button
-            class="btn-flat btn-red"
-            style="width:49%;"
-            @click="onDeleteItems()"
-          >onDeleteItems()</button>
+          <button class="btn-flat btn-blue" style="width:49%;" @click="onAddItems()">項目追加</button>
+          <button class="btn-flat btn-red" style="width:49%;" @click="onDeleteItems()">項目削除</button>
           <button
             class="btn-flat btn-green"
             style="display:block; width:99%; margin-top:3px;"
             @click="fillData()"
             v-show="!isSet"
-          >fillData()</button>
+          >データをセット</button>
           <button
             class="btn-flat btn-green"
             style="display:block; width:99%; margin-top:3px;"
             @click="onStartRoulette()"
             v-show="isSet"
-          >Start!</button>
+          >スタート！</button>
         </form>
       </div>
       <transition name="modal">
