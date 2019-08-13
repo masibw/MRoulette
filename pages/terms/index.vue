@@ -24,6 +24,12 @@
         <h2>第五条（お問い合わせ）</h2>
         <p>何か当サイトについてのご質問やご連絡がある場合は以下のtwitterアカウントまでご連絡ください。</p>
         <p>@ masi19bw</p>
+        <a
+          href="https://twitter.com/share?ref_src=twsrc%5Etfw"
+          class="twitter-share-button"
+          data-show-count="false"
+        >Tweet</a>
+        <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
       </div>
     </div>
   </div>

@@ -12,7 +12,25 @@ export default {
         hid: "description",
         name: "description",
         content: process.env.npm_package_description || ""
-      }
+      },
+      { property: "og:title", content: "MRoulette" },
+      { property: "og:type", content: "website" },
+      { property: "og:site_name", content: "MRoulette" },
+      {
+        property: "og:description",
+        content: process.env.npm_package_description || ""
+      },
+      {
+        property: "og:url",
+        content: "https://masibw.github.io/MRoulette/"
+      },
+
+      {
+        property: "og:image",
+        content: "https://masibw.github.io/MRoulette/favicon.ico"
+      },
+      { name: "twitter:site", content: "@masi19bw" },
+      { name: "twitter:card", content: "Summary Card" }
     ],
     link: [
       { rel: "icon", type: "image/x-icon", href: "/MRoulette/favicon.ico" }
@@ -40,7 +58,15 @@ export default {
   /*
    ** Nuxt.js modules
    */
-  modules: [],
+
+  modules: [
+    [
+      "@nuxtjs/google-analytics",
+      {
+        id: "UA-141695337-3"
+      }
+    ]
+  ],
   /*
    ** Build configuration
    */

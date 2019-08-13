@@ -12,6 +12,7 @@
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {
+    "@nuxtjs/google-analytics": "^2.2.0",
     "chart.js": "^2.8.0",
     "chartjs-plugin-labels": "^1.1.0",
     "nuxt": "^2.0.0",

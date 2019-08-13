@@ -44,6 +44,13 @@
             v-show="isSet"
           >スタート！</button>
         </form>
+        <a
+          href="https://twitter.com/share?ref_src=twsrc%5Etfw"
+          class="twitter-share-button"
+          data-show-count="false"
+          data-text="webで簡単ルーレットを使ってなかなか決まらないものもパパッと決めちゃおう！"
+        >Tweet</a>
+        <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
       </div>
       <transition name="modal">
         <div id="overlay" v-show="showContent" v-on:click="closeModal">
@@ -285,6 +292,10 @@ ul {
     width: 20%;
   }
 }
+.twitter-share-button {
+  margin: 5px;
+}
+
 #pieChart {
   margin-top: 1rem;
 }
