@@ -2,8 +2,8 @@
   <div id="container">
     <div id="app">
       <div id="roulette">
-        <img class="pin" src="~/assets/pin-min.png" v-show="!pinRotate" />
-        <img class="pin" src="~assets/pin-anime.gif" v-show="pinRotate" />
+        <img class="pin" src="~/assets/pin-min.png" v-show="!pinRotate" alt="pin" />
+        <img class="pin" src="~assets/pin-anime.gif" v-show="pinRotate" alt="rotating pin" />
         <pie-chart id="pieChart" :chart-data="datacollection" :options="chartOptions"></pie-chart>
       </div>
       <div id="sideMenu">
@@ -12,21 +12,25 @@
         <form v-on:submit.prevent>
           <ul v-for="(item) in items" :key="item.id" class="no-gutters">
             <li>
-              <input
-                type="text"
-                class="textbox label"
-                v-model="item.label"
-                placeholder="名称を入力してください"
-                required
-              />
-              <input
-                type="text"
-                pattern="\d+"
-                class="textbox number"
-                v-model="item.rate"
-                placeholder="比率"
-                required
-              />
+              <label>
+                <input
+                  type="text"
+                  class="textbox label"
+                  v-model="item.label"
+                  placeholder="名称を入力してください"
+                  required
+                />
+              </label>
+              <label>
+                <input
+                  type="text"
+                  pattern="\d+"
+                  class="textbox number"
+                  v-model="item.rate"
+                  placeholder="比率"
+                  required
+                />
+              </label>
             </li>
           </ul>
           <button class="btn-flat btn-blue" style="width:49%;" @click="onAddItems()">項目追加</button>
@@ -392,27 +396,27 @@ li {
   color: #fff;
 }
 .btn-red {
-  color: #d9333f;
-  border: solid 2px #d9333f;
+  color: #ec0000;
+  border: solid 2px #ec0000;
 }
 .btn-red:hover {
-  background-color: #d9333f;
+  background-color: #ec0000;
   transition: 0.5s;
 }
 .btn-blue {
-  color: #0095d9;
-  border: solid 2px #0095d9;
+  color: #007eb7;
+  border: solid 2px #007eb7;
 }
 .btn-blue:hover {
-  background-color: #0095d9;
+  background-color: #007eb7;
   transition: 0.5s;
 }
 .btn-green {
-  color: #3eb370;
-  border: solid 2px #3eb370;
+  color: #00883a;
+  border: solid 2px #00883a;
 }
 .btn-green:hover {
-  background-color: #3eb370;
+  background-color: #00883a;
   transition: 0.5s;
 }
 
