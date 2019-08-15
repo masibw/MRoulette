@@ -391,6 +391,7 @@ li {
   border-radius: 3px;
   transition: 0.4s;
   font-size: 18px;
+  background-color: #fff;
 }
 .btn-flat:hover {
   color: #fff;
