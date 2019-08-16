@@ -16,6 +16,10 @@ export default {
         name: "description",
         content: process.env.npm_package_description || ""
       },
+      {
+        name: "google-site-verification",
+        content: "CHfIRkry56Za9PB8hW-ncJr1FnNPm6GQnU9L7NGOpjc"
+      },
       { property: "og:title", content: "MRoulette" },
       { property: "og:type", content: "website" },
       { property: "og:site_name", content: "MRoulette" },
