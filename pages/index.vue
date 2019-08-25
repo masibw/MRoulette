@@ -91,10 +91,10 @@ export default {
   },
   data() {
     return {
-      datacollection: null,
+      datacollection: {},
       isActive: false,
       showContent: false,
-      picked: "",
+      picked: " ",
       isSet: false,
       pinRotate: false,
       items: [
