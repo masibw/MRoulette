@@ -246,6 +246,10 @@ export default {
 </script>
 
 <style lang="scss">
+$red: #ec0000;
+$green: #00883a;
+$blue: #0179af;
+
 @import url("https://fonts.googleapis.com/css?family=Noto+Sans+JP|Roboto&display=swap");
 p {
   font-size: 15px;
@@ -397,27 +401,27 @@ li {
   color: #fff;
 }
 .btn-red {
-  color: #ec0000;
-  border: solid 2px #ec0000;
+  color: $red;
+  border: solid 2px $red;
 }
 .btn-red:hover {
-  background-color: #ec0000;
+  background-color: $red;
   transition: 0.5s;
 }
 .btn-blue {
-  color: #007eb7;
-  border: solid 2px #007eb7;
+  color: $blue;
+  border: solid 2px $blue;
 }
 .btn-blue:hover {
-  background-color: #007eb7;
+  background-color: $blue;
   transition: 0.5s;
 }
 .btn-green {
-  color: #00883a;
-  border: solid 2px #00883a;
+  color: $green;
+  border: solid 2px $green;
 }
 .btn-green:hover {
-  background-color: #00883a;
+  background-color: $green;
   transition: 0.5s;
 }
 
