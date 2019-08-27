@@ -1,8 +1,6 @@
 export default {
   mode: "universal",
-  /*
-   ** Headers of the page
-   */
+
   head: {
     title: process.env.npm_package_name || "",
     htmlAttrs: {
@@ -26,7 +24,8 @@ export default {
       { property: "og:site_name", content: "MRoulette" },
       {
         property: "og:image",
-        content: "https://masibw.github.io/MRoulette/img/ogImg.jpg"
+        content:
+          "https://github.com/masibw/MRoulette/blob/master/assets/ogImg.jpg"
       },
       {
         property: "og:description",
