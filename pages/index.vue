@@ -82,6 +82,7 @@
         >Tweet</a>
         <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
       </div>
+
       <transition name="modal">
         <div id="overlay" v-show="showContent" v-on:click="closeModal">
           <div id="content" @click.stop>
@@ -90,7 +91,14 @@
               <p>選ばれたのは</p>
               <p id="result">「{{picked}}」</p>
               <p>でした!!!</p>
+              <a
+                href="https://twitter.com/share?ref_src=twsrc%5Etfw"
+                class="twitter-share-button"
+                data-show-count="false"
+              >Tweet</a>
+              <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
             </div>
+            <a v-on:click="createTwitterData" id="btnResultTweet" class="btn-flat btn-blue">結果をツイート</a>
             <button id="btn-close" class="btn-flat btn-blue" v-on:click="closeModal">Close</button>
           </div>
         </div>
@@ -118,6 +126,7 @@ export default {
   },
   data() {
     return {
+      twiUrl: " ",
       title: " ",
       focusTitle: false,
       deletePickedItem: false,
@@ -169,6 +178,19 @@ export default {
     };
   },
   methods: {
+    createTwitterData() {
+      var url = encodeURIComponent(location.href);
+      var txt = this.title + "に選ばれたのは" + this.picked + "でした！";
+      var hashtags = "MRoulette";
+      window.open().location.href =
+        "https://twitter.com/share?url=" +
+        url +
+        "&text=" +
+        txt +
+        "&hashtags=" +
+        hashtags +
+        "&count=none&lang=ja";
+    },
     fillData() {
       pieChart.style.transform = "rotate(" + 0 + "deg)";
       this.setChartParam();
@@ -509,7 +531,11 @@ li {
   background-color: $green;
   transition: 0.5s;
 }
-
+#btnResultTweet {
+  position: absolute;
+  bottom: 0;
+  margin-bottom: 1em;
+}
 #btn-close {
   position: absolute;
   bottom: 0;

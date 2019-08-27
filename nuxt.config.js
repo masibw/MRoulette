@@ -6,6 +6,7 @@ export default {
   head: {
     title: process.env.npm_package_name || "",
     htmlAttrs: {
+      prefix: "og: http://ogp.me/ns#",
       lang: "ja"
     },
     meta: [
@@ -24,6 +25,10 @@ export default {
       { property: "og:type", content: "website" },
       { property: "og:site_name", content: "MRoulette" },
       {
+        property: "og:image",
+        content: "https://masibw.github.io/MRoulette/ogImg.jpg"
+      },
+      {
         property: "og:description",
         content: process.env.npm_package_description || ""
       },
@@ -37,7 +42,7 @@ export default {
         content: "https://masibw.github.io/MRoulette/favicon.ico"
       },
       { name: "twitter:site", content: "@masi19bw" },
-      { name: "twitter:card", content: "Summary Card" }
+      { name: "twitter:card", content: "summary_large_image" }
     ],
     link: [
       { rel: "icon", type: "image/x-icon", href: "/MRoulette/favicon.ico" }
