@@ -47,6 +47,8 @@
             @click="onStartRoulette()"
             v-show="isSet"
           >スタート！</button>
+          <input type="checkbox" id="deletePickedItem" v-model="deletePickedItem" />
+          <label for="deletePickedItem">抽選後に選ばれたものを削除する{{deletePickedItem}}</label>
         </form>
         <a
           href="https://twitter.com/share?ref_src=twsrc%5Etfw"
@@ -91,6 +93,7 @@ export default {
   },
   data() {
     return {
+      deletePickedItem: false,
       datacollection: {},
       isActive: false,
       showContent: false,
@@ -230,6 +233,9 @@ export default {
         //TODO針
         me.pinRotate = false;
         pieChart.style.transform = "rotate(-" + stopAngle + "deg)";
+        if (deletePickedItem) {
+          if (me.items.length > 1) me.items.splice(stopNumber, 1);
+        }
         setTimeout(me.openModal, 500);
         me.num = 0;
         me.isSet = false;
