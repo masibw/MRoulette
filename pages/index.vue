@@ -2,11 +2,25 @@
   <div id="container">
     <div id="app">
       <div id="roulette">
+        <p id="title" v-if="title!=' '">{{title}}についてのルーレット</p>
         <img class="pin" src="~/assets/pin-min.png" v-show="!pinRotate" alt="pin" />
         <img class="pin" src="~assets/pin-anime.gif" v-show="pinRotate" alt="rotating pin" />
         <pie-chart id="pieChart" :chart-data="datacollection" :options="chartOptions"></pie-chart>
       </div>
       <div id="sideMenu">
+        <!-- submitによってページリロードがされない submit.prevent -->
+        <form v-on:submit.prevent>
+          <div class="titleWrap">
+            <label for="titleReader" class="titleLabel" v-bind:class="{focus:focusTitle}">Title</label>
+            <input
+              type="text"
+              @focus="focusTitle=true"
+              id="titleReader"
+              v-model="title"
+              placeholder="Insert Title here"
+            />
+          </div>
+        </form>
         <p id="label">label</p>
         <p id="rate">rate(半角数字)</p>
         <form v-on:submit.prevent>
@@ -33,22 +47,32 @@
               </label>
             </li>
           </ul>
-          <button class="btn-flat btn-blue" style="width:49%;" @click="onAddItems()">項目追加</button>
-          <button class="btn-flat btn-red" style="width:49%;" @click="onDeleteItems()">項目削除</button>
+          <button
+            class="btn-flat btn-blue"
+            style="width:49%; margin-top:0.3em;"
+            @click="onAddItems()"
+          >項目追加</button>
+          <button
+            class="btn-flat btn-red"
+            style="width:49%;margin-top:0.3em;"
+            @click="onDeleteItems()"
+          >項目削除</button>
           <button
             class="btn-flat btn-green"
-            style="display:block; width:99%; margin-top:3px;"
+            style="display:block; width:99%; margin-top:0.3em;"
             @click="fillData()"
             v-show="!isSet"
           >データをセット</button>
           <button
             class="btn-flat btn-green"
-            style="display:block; width:99%; margin-top:3px;"
+            style="display:block; width:99%; margin-top:0.3em;"
             @click="onStartRoulette()"
             v-show="isSet"
           >スタート！</button>
-          <input type="checkbox" id="deletePickedItem" v-model="deletePickedItem" />
-          <label for="deletePickedItem">抽選後に選ばれたものを削除する{{deletePickedItem}}</label>
+          <div class="checkBoxList">
+            <input type="checkbox" id="deletePickedItem" v-model="deletePickedItem" />
+            <label style="margin:1em;" for="deletePickedItem">抽選後に選ばれたものをリストから削除する</label>
+          </div>
         </form>
         <a
           href="https://twitter.com/share?ref_src=twsrc%5Etfw"
@@ -62,6 +86,7 @@
         <div id="overlay" v-show="showContent" v-on:click="closeModal">
           <div id="content" @click.stop>
             <div id="resultText">
+              <p v-if="title!=' ' " id="resultTitle">{{title}}に</p>
               <p>選ばれたのは</p>
               <p id="result">「{{picked}}」</p>
               <p>でした!!!</p>
@@ -93,6 +118,8 @@ export default {
   },
   data() {
     return {
+      title: " ",
+      focusTitle: false,
       deletePickedItem: false,
       datacollection: {},
       isActive: false,
@@ -159,7 +186,7 @@ export default {
     onAddItems() {
       this.items.push({
         colorNo: Math.round(Math.random() * 9),
-        label: "",
+        label: " ",
         rate: 1
       });
       this.isSet = false;
@@ -190,7 +217,7 @@ export default {
       const timeOut = 4000;
       let sumRate = 0;
       let i = 0;
-      this.picked = "";
+      this.picked = " ";
       pieChart.style.transform = "rotate(" + 0 + "deg)";
       for (i = 0; i < this.items.length; i++) {
         sumRate += parseInt(this.items[i].rate);
@@ -233,8 +260,8 @@ export default {
         //TODO針
         me.pinRotate = false;
         pieChart.style.transform = "rotate(-" + stopAngle + "deg)";
-        if (deletePickedItem) {
-          if (me.items.length > 1) me.items.splice(stopNumber, 1);
+        if (me.deletePickedItem != false && me.items.length > 1) {
+          me.items.splice(stopNumber, 1);
         }
         setTimeout(me.openModal, 500);
         me.num = 0;
@@ -257,6 +284,11 @@ $green: #00883a;
 $blue: #0179af;
 
 @import url("https://fonts.googleapis.com/css?family=Noto+Sans+JP|Roboto&display=swap");
+
+::-webkit-scrollbar {
+  display: none;
+  -webkit-appearance: none;
+}
 p {
   font-size: 15px;
 }
@@ -283,6 +315,10 @@ ul {
   position: relative;
   width: 100%;
   margin: auto;
+  #title {
+    font-size: 1.8em;
+    text-align: center;
+  }
   .pin {
     z-index: 1;
     position: absolute;
@@ -294,6 +330,46 @@ ul {
 #sideMenu {
   width: 100%;
   margin: auto;
+  .titleWrap {
+    position: relative;
+    width: 100%;
+    height: 4em;
+    margin: 0 auto;
+    .titleLabel {
+      position: absolute;
+      top: -2px;
+      left: 10px;
+      font-size: 1em;
+      color: #a0a0a0;
+      transition: all 0.25s ease;
+      z-index: 1;
+      // titleLabel.focusのこと
+    }
+    .focus {
+      top: -25px;
+      left: 5px;
+      font-size: 0.8em;
+      color: #333;
+    }
+    #titleReader {
+      position: relative;
+      display: block;
+      width: 100%;
+      margin-top: 50px;
+      padding: 15x;
+      border: none;
+      border-radius: 5px;
+      font-size: 1.5em;
+      color: #333;
+      outline: none;
+      border-bottom: solid 1px #333;
+    }
+  }
+
+  .checkBoxList {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+  }
   p {
     display: inline-block;
     text-align: center;
@@ -336,7 +412,7 @@ ul {
   #content {
     z-index: 2;
     width: 80%;
-    height: 30%;
+    height: 40%;
     padding: 1em;
     background: #fff;
     transition: all 0.8s ease;
@@ -349,6 +425,9 @@ ul {
     }
     #resultText {
       margin: 1em;
+    }
+    #resultTitle {
+      font-size: 1.8em;
     }
   }
 }
@@ -458,11 +537,71 @@ li {
   #overlay {
     #content {
       width: 50%;
-      height: 30%;
+      height: 40%;
       #result {
         font-size: 3em;
       }
     }
   }
+}
+
+/* Base for label styling */
+[type="checkbox"]:not(:checked),
+[type="checkbox"]:checked {
+  position: absolute;
+  left: -9999px;
+}
+[type="checkbox"]:not(:checked) + label,
+[type="checkbox"]:checked + label {
+  position: relative;
+  padding-left: 1.95em;
+  cursor: pointer;
+}
+
+/* checkbox aspect */
+[type="checkbox"]:not(:checked) + label:before,
+[type="checkbox"]:checked + label:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.15em;
+  width: 1.25em;
+  height: 1.25em;
+  border: 2px solid #ccc;
+  background: #fff;
+  border-radius: 4px;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+/* checked mark aspect */
+[type="checkbox"]:not(:checked) + label:after,
+[type="checkbox"]:checked + label:after {
+  content: "\2713\0020";
+  position: absolute;
+  top: 0.15em;
+  left: 0.22em;
+  font-size: 1.3em;
+  line-height: 0.8;
+  color: #09ad7e;
+  transition: all 0.2s;
+  font-family: "Lucida Sans Unicode", "Arial Unicode MS", Arial;
+}
+/* checked mark aspect changes */
+[type="checkbox"]:not(:checked) + label:after {
+  opacity: 0;
+  transform: scale(0);
+}
+[type="checkbox"]:checked + label:after {
+  opacity: 1;
+  transform: scale(1);
+}
+/* accessibility */
+[type="checkbox"]:checked:focus + label:before,
+[type="checkbox"]:not(:checked):focus + label:before {
+  border: 2px dotted blue;
+}
+
+/* hover style just for information */
+label:hover:before {
+  border: 2px solid #4778d9 !important;
 }
 </style>
