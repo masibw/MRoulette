@@ -35,11 +35,6 @@ export default {
         property: "og:url",
         content: "https://masibw.github.io/MRoulette/"
       },
-
-      {
-        property: "og:image",
-        content: "https://masibw.github.io/MRoulette/favicon.ico"
-      },
       { name: "twitter:site", content: "@masi19bw" },
       { name: "twitter:card", content: "summary_large_image" }
     ],
