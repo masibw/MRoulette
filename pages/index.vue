@@ -91,14 +91,11 @@
               <p>選ばれたのは</p>
               <p id="result">「{{picked}}」</p>
               <p>でした!!!</p>
-              <a
-                href="https://twitter.com/share?ref_src=twsrc%5Etfw"
-                class="twitter-share-button"
-                data-show-count="false"
-              >Tweet</a>
-              <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
             </div>
             <a v-on:click="createTwitterData" id="btnResultTweet" class="btn-flat btn-blue">結果をツイート</a>
+            <a v-on:click="createTwitterData" id="btnResultTweetMobile">
+              <img src="@/static/Twitter_Logo_WhiteOnBlue.png" />
+            </a>
             <button id="btn-close" class="btn-flat btn-blue" v-on:click="closeModal">Close</button>
           </div>
         </div>
@@ -182,7 +179,7 @@ export default {
       var url = encodeURIComponent(location.href);
       var txt = this.title + "に選ばれたのは" + this.picked + "でした！";
       var hashtags = "MRoulette";
-      window.open().location.href =
+      this.twiUrl =
         "https://twitter.com/share?url=" +
         url +
         "&text=" +
@@ -190,6 +187,7 @@ export default {
         "&hashtags=" +
         hashtags +
         "&count=none&lang=ja";
+      window.open().location.href = this.twiUrl;
     },
     fillData() {
       pieChart.style.transform = "rotate(" + 0 + "deg)";
@@ -536,6 +534,15 @@ li {
   bottom: 0;
   margin-bottom: 1em;
 }
+#btnResultTweetMobile {
+  position: absolute;
+  bottom: 0;
+  margin-bottom: 1em;
+  img {
+    width: 32px;
+    height: 32px;
+  }
+}
 #btn-close {
   position: absolute;
   bottom: 0;
@@ -545,8 +552,15 @@ li {
   -ms-transform: translateX(-50%);
   margin-bottom: 1em;
 }
-
+@media (max-width: 768px) {
+  #btnResultTweet {
+    display: none;
+  }
+}
 @media (min-width: 768px) {
+  #btnResultTweetMobile {
+    display: none;
+  }
   #roulette {
     width: 45%;
     margin: auto;
@@ -559,6 +573,11 @@ li {
   #sideMenu {
     width: 45%;
     padding: 5%;
+  }
+  #btnResultTweet {
+    position: absolute;
+    bottom: 0;
+    margin-bottom: 1em;
   }
   #overlay {
     #content {
