@@ -24,8 +24,7 @@ export default {
       { property: "og:site_name", content: "MRoulette" },
       {
         property: "og:image",
-        content:
-          "https://github.com/masibw/MRoulette/blob/master/assets/ogImg.jpg"
+        content: "https://masibw.github.io/MRoulette/ogImg.jpg"
       },
       {
         property: "og:description",
