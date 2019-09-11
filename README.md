@@ -2,6 +2,9 @@
 
 This is the roulette web app works on web browser.
 
+<img src="https://github.com/masibw/dataStore/blob/master/ss.png" height="600" width="900">
+
+
 The functions are...
 
 - Title
@@ -9,7 +12,6 @@ The functions are...
 - Easy Tweet result system.
 
 
-<img src="https://github.com/masibw/dataStore/blob/master/ss.png" height="600" width="900">
 
 Access ->  [here](https://masibw.github.io/MRoulette/)
 
