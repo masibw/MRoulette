@@ -10,6 +10,7 @@ The functions are...
 - Title
 - AutoDelete picked item.
 - Easy Tweet result system.
+- change rate system.
 
 
 
