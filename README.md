@@ -1,6 +1,21 @@
-# roulette
+# MRoulette
 
-> This is the roulette easy to use
+This is the roulette web app works on web browser.
+
+<img src="https://github.com/masibw/dataStore/blob/master/ss.png" height="600" width="900">
+
+
+The functions are...
+
+- Title
+- AutoDelete picked item.
+- Easy Tweet result system.
+- change rate system.
+
+
+
+Access ->  [here](https://masibw.github.io/MRoulette/)
+
 
 ## Build Setup
 
