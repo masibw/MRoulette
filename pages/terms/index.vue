@@ -2,7 +2,7 @@
   <div>
     <div id="terms">
       <div id="contents">
-        <h1 class="title">「MRoulette」利用規約</h1>
+        <h1>「MRoulette」利用規約</h1>
         <p>この規約は、「MRoulette」運営（以下当サイト）と、利用者様との関係を定めるものです。</p>
         <h2>第一条（本規約への同意）</h2>
         <ol type="1">
@@ -45,7 +45,10 @@ export default {
 p {
   color: #333;
 }
-
+h2 {
+  margin-top: 3%;
+  margin-bottom: 3%;
+}
 #terms {
   margin-top: 10px;
   position: relative;

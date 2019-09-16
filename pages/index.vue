@@ -2,7 +2,7 @@
   <div id="container">
     <div id="app">
       <div id="roulette">
-        <p id="title" v-if="title!=' '">{{title}}についてのルーレット</p>
+        <p id="title" v-if="!title.trim().length==0">{{title}}についてのルーレット</p>
         <img class="pin" src="~/assets/pin-min.png" v-show="!pinRotate" alt="pin" />
         <img class="pin" src="~assets/pin-anime.gif" v-show="pinRotate" alt="rotating pin" />
         <pie-chart id="pieChart" :chart-data="datacollection" :options="chartOptions"></pie-chart>
@@ -24,7 +24,7 @@
         <p id="label">label</p>
         <p id="rate">rate(半角数字)</p>
         <form v-on:submit.prevent>
-          <ul v-for="(item) in items" :key="item.id" class="no-gutters">
+          <ul v-for="(item,index) in items" :key="item.id" class="no-gutters">
             <li>
               <label>
                 <input
@@ -33,6 +33,7 @@
                   v-model="item.label"
                   placeholder="名称を入力してください"
                   required
+                  v-on:focus="isSet=false;"
                 />
               </label>
               <label>
@@ -43,20 +44,22 @@
                   v-model="item.rate"
                   placeholder="比率"
                   required
+                  v-on:focus="isSet=false;"
                 />
               </label>
+              <a v-on:click="onDeleteItemOne(index)">
+                <img
+                  src="~/assets/deleteButton.png"
+                  style="background-color:#fff; vertical-align:middle; width:42px; height:auto; margin-left:10px; cursor:pointer;"
+                />
+              </a>
             </li>
           </ul>
           <button
             class="btn-flat btn-blue"
-            style="width:49%; margin-top:0.3em;"
+            style="width:99%; margin-top:0.3em;"
             @click="onAddItems()"
           >項目追加</button>
-          <button
-            class="btn-flat btn-red"
-            style="width:49%;margin-top:0.3em;"
-            @click="onDeleteItems()"
-          >項目削除</button>
           <button
             class="btn-flat btn-green"
             style="display:block; width:99%; margin-top:0.3em;"
@@ -87,12 +90,15 @@
         <div id="overlay" v-show="showContent" v-on:click="closeModal">
           <div id="content" @click.stop>
             <div id="resultText">
-              <p v-if="title!=' ' " id="resultTitle">{{title}}に</p>
+              <p v-if="!title.trim().length==0 " id="resultTitle">{{title}}に</p>
               <p>選ばれたのは</p>
               <p id="result">「{{picked}}」</p>
               <p>でした!!!</p>
             </div>
-            <a v-on:click="createTwitterData" id="btnResultTweet" class="btn-flat btn-blue">結果をツイート</a>
+            <a v-on:click="createTwitterData" id="btnResultTweet">
+              <img src="@/static/Twitter_Logo_WhiteOnBlue.png" />
+            </a>
+
             <a v-on:click="createTwitterData" id="btnResultTweetMobile">
               <img src="@/static/Twitter_Logo_WhiteOnBlue.png" />
             </a>
@@ -177,7 +183,12 @@ export default {
   methods: {
     createTwitterData() {
       var url = encodeURIComponent(location.href);
-      var txt = this.title + "に選ばれたのは" + this.picked + "でした！";
+      if (this.title.trim().length == 0) {
+        var titletxt = "";
+      } else {
+        var titletxt = "に選ばれたのは";
+      }
+      var txt = this.title + titletxt + this.picked + "でした！";
       var hashtags = "MRoulette";
       this.twiUrl =
         "https://twitter.com/share?url=" +
@@ -227,6 +238,12 @@ export default {
     onDeleteItems() {
       if (this.items.length > 1) {
         this.items.splice(this.items.length - 1, 1);
+      }
+      this.isSet = false;
+    },
+    onDeleteItemOne(index) {
+      if (this.items.length > 1) {
+        this.items.splice(index, 1);
       }
       this.isSet = false;
     },
@@ -309,8 +326,8 @@ $blue: #0179af;
   display: none;
   -webkit-appearance: none;
 }
-p {
-  font-size: 15px;
+body {
+  font-size: 16px;
 }
 
 #container {
@@ -396,7 +413,7 @@ ul {
     font-size: 15px;
   }
   #label {
-    width: 74%;
+    width: 60%;
   }
   #rate {
     width: 20%;
@@ -469,7 +486,7 @@ li {
     text-align: center;
   }
   .label {
-    width: 75%;
+    width: 60%;
   }
 
   .number {
@@ -533,6 +550,10 @@ li {
   position: absolute;
   bottom: 0;
   margin-bottom: 1em;
+  img {
+    width: 32px;
+    height: 32px;
+  }
 }
 #btnResultTweetMobile {
   position: absolute;
@@ -572,7 +593,7 @@ li {
   }
   #sideMenu {
     width: 45%;
-    padding: 5%;
+    padding: 5% 0 5% 5%;
   }
   #btnResultTweet {
     position: absolute;
