@@ -15,10 +15,14 @@
           <li>もし項目ごとの当選確率を設定したい場合は比率を設定します。</li>
           <li>「抽選後に選ばれたものを削除する」にチェックを入れることで選ばれた項目を自動で削除します。（使用例：役員などを複数名決める場合）</li>
           <li>「データをセット」を押すことでルーレットに項目が登録され、「スタート」ボタンに変化します。</li>
-          <img src="~/assets/usage1.jpg" style="max-width:100%;height:auto;" />
+          <img src="~/assets/usage1.jpg" style="max-width:100%;height:auto;" alt="usageImage1" />
           <li>「スタート」ボタンを押すことでルーレットが始まり、結果が画面に表示されます。</li>
           <li>結果画面でツイートボタンを押すことでTwitterに抽選タイトルと結果を投稿することができます。</li>
-          <img src="~/assets/usage2.jpg" style="max-width:100%;height:auto; border:1px solid #333;" />
+          <img
+            src="~/assets/usage2.jpg"
+            style="max-width:100%;height:auto; border:1px solid #333;"
+            alt="usageImage2"
+          />
         </ol>
         <a
           href="https://twitter.com/share?ref_src=twsrc%5Etfw"

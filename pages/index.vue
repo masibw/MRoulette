@@ -51,6 +51,7 @@
                 <img
                   src="~/assets/deleteButton.png"
                   style="background-color:#fff; vertical-align:middle; width:42px; height:auto; margin-left:10px; cursor:pointer;"
+                  alt="deleteButton"
                 />
               </a>
             </li>

@@ -70,8 +70,23 @@ export default {
       {
         id: "UA-141695337-3"
       }
-    ]
+    ],
+    ["@nuxtjs/pwa"]
   ],
+  workbox: {
+    dev: true
+  },
+  manifest: {
+    name: "MRoulette",
+    short_name: "MRoulette",
+    title: "MRoulette",
+    "og:title": "MRoulette",
+    description: "This is RouletteApp easy to use.",
+    "og:description": "This is RouletteApp easy to use.",
+    lang: "ja",
+    theme_color: "#ffffff",
+    background_color: "#ffffff"
+  },
   /*
    ** Build configuration
    */
