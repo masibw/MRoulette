@@ -74,7 +74,7 @@ export default {
     ["@nuxtjs/pwa"]
   ],
   workbox: {
-    dev: true
+    dev: false
   },
   manifest: {
     name: "MRoulette",

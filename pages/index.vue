@@ -574,12 +574,12 @@ li {
   -ms-transform: translateX(-50%);
   margin-bottom: 1em;
 }
-@media (max-width: 768px) {
+@media (max-width: 955px) {
   #btnResultTweet {
     display: none;
   }
 }
-@media (min-width: 768px) {
+@media (min-width: 955px) {
   #btnResultTweetMobile {
     display: none;
   }

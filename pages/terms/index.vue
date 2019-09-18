@@ -58,7 +58,7 @@ h2 {
     transform: translateX(-50%);
     -webkit-transform: translateX(-50%);
     -ms-transform: translateX(-50%);
-    max-width: 80%;
+    width: 80%;
   }
 }
 </style>
