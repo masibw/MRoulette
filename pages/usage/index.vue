@@ -2,8 +2,7 @@
   <div>
     <div id="usage">
       <div id="contents">
-        <h1 style="margin-bottom:3%;">MRouletteとは</h1>
-        <p>MRouletteはWebで気軽に使えるルーレット（抽選）アプリです。</p>
+        <h1 style="margin-bottom:3%;">MRouletteとはWebで気軽に使えるルーレット（抽選）アプリです。</h1>
         <h2>操作方法</h2>
         <ol type="1">
           <li>ルーレットのタイトルを入力します。（例：今日の晩御飯）</li>
